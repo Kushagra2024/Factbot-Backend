@@ -9,7 +9,7 @@ const app = express();
 app.use(
     cors({
         origin: _CONFIG.ORIGIN, // origin is set to '*' means wildcard which allows request from any origin, can't be used when credentials are involved.
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true,
         maxAge: 600,
@@ -31,6 +31,8 @@ app.use(
 app.use(express.static("public"));
 
 app.use(cookieParser());
+
+// routes
 
 // global error handler
 app.use(globalErrorhandler);
