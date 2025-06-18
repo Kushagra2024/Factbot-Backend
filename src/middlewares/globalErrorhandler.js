@@ -1,11 +1,26 @@
-function globalErrorhandler(err, req, res) {
-    const statusCode = err.statusCode || 500;
+import { ApiError } from "../utils/ApiError.js";
+import _CONFIG from "../config.js";
+
+function globalErrorhandler(err, _, res, next) {
+    if (_CONFIG.ENV !== "development") {
+        err.stack = null;
+    }
+
+    console.log(err);
+
+    const statusCode = err?.statusCode || 500;
+    const message =
+        err instanceof ApiError ? err?.message : "Internal Server Error";
+    const errors = err.errors || [];
+    const data = null;
+    const success = false;
 
     return res.status(statusCode).json({
-        data: err.data,
-        message: err.message,
-        success: err.success,
-        errors: err.errors,
+        statusCode,
+        data,
+        message,
+        success,
+        errors,
     });
 }
 

@@ -1,15 +1,20 @@
+import _CONFIG from "../config.js";
+
 class ApiError extends Error {
     constructor(
         statusCode = 500,
-        errors = [],
-        message = "Something went wrong"
+        message = "Something went wrong",
+        errors = []
     ) {
         super(message);
+        this.name = this.constructor.name;
         this.statusCode = statusCode;
-        this.data = null;
-        this.message = message;
-        this.success = false;
         this.errors = errors;
+        Error.captureStackTrace(this, this.constructor);
+
+        if (_CONFIG.ENV === "development") {
+            this.stackTrace = this.stack;
+        }
     }
 }
 
