@@ -22,7 +22,7 @@ async function connectDB() {
 
         return connectionInstance;
     } catch (error) {
-        throw new Error(`MongoDB connection Failed !!!\nError: ${error}`);
+        throw new Error(`MongoDB connection Failed !!!. ${error.message}`);
     }
 }
 
