@@ -3,6 +3,8 @@ import _CONFIG from "../config.js";
 import _CONSTANTS from "../constants.js";
 
 async function connectDB() {
+    const MongoDB_Connection_URI =
+        "mongodb://localhost:27017" || _CONFIG.MONGODB_URI;
     try {
         mongoose.connection.on("connecting", () =>
             console.log("Establishing connection with MongoDB")
@@ -17,7 +19,7 @@ async function connectDB() {
         );
 
         const connectionInstance = await mongoose.connect(
-            `${_CONFIG.MONGODB_URI}/${_CONSTANTS.DB_NAME}`
+            `${MongoDB_Connection_URI}/${_CONSTANTS.DB_NAME}`
         );
 
         return connectionInstance;
