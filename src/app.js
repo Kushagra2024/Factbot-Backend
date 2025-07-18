@@ -33,6 +33,15 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // routes
+import chatsRouter from "./routes/chats.route.js";
+import userRoute from "./routes/auth.route.js";
+import settingsRoute from "./routes/settings.route.js";
+
+app.use("/factbot/api/v1/user", userRoute);
+
+app.use("/factbot/api/v1/settings", settingsRoute);
+
+app.use("/factbot/api/v1/chats", chatsRouter);
 
 // global error handler
 app.use(globalErrorhandler);

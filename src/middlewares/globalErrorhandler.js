@@ -6,8 +6,6 @@ function globalErrorhandler(err, _, res, next) {
         err.stack = null;
     }
 
-    console.log(err);
-
     const statusCode = err?.statusCode || 500;
     const message =
         err instanceof ApiError ? err?.message : "Internal Server Error";

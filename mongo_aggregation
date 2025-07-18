@@ -1,0 +1,228 @@
+[
+  [
+  {
+    $group: {
+      _id: {
+        title: "$company.title",
+        country: "$company.location.country"
+           },
+      userCount: {
+        $sum: 1
+      }
+    }
+  }
+],
+  [
+    {
+      $match: {
+        tags: {
+          $all: ['enim', 'id']
+        }
+      }
+    },
+    {
+      $count: "UsersWithBothEnimAndAd"
+    }
+  ],
+  [
+    {
+      $match: {
+        'tags.1': 'ad'
+      }
+    },
+    {
+      $count: 'userWithAd'
+    }
+  ],
+  [
+    {
+      $unwind: {
+        path: "$tags",
+        includeArrayIndex: 'tag_index',
+        preserveNullAndEmptyArrays: true
+      }
+    },
+    {
+      $match: {
+        tags: "ad",
+        tag_index: 1
+      }
+    },
+    {
+      $project: {
+        name: 1
+      }
+    }
+  ],
+    [
+      {
+        $group: {
+          _id: "$favoriteFruit",
+          users: {
+            $push: "$name"
+          },
+        }
+      },
+      {
+        $project: {
+          users: {
+            $sortArray: {
+              input: '$users',
+              sortBy: -1
+            }
+          }
+        }
+      }
+    ],
+    [
+      {
+        $match: {
+        isActive: false,
+        tags: 'velit'
+        }
+      },
+      {
+        $project: {
+        name: 1,
+        age: 1
+        }
+      }
+    ]
+    [
+      {
+      $match: {
+        tags: "enim"
+      }
+      }
+    ]
+    {
+        $count: "countEnim"
+    }
+    {
+    $addFields: {
+      tagsCount: {
+        $size: {
+          $ifNull: ["$tags", []]
+        }
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgTagCountPerUser: {
+        $avg: "$tagsCount"
+      }
+    }
+  },
+  {
+    $unwind: "$tags"
+  },
+  {
+    $group: {
+      _id: "$name",
+      numOfTags: {
+        $sum: 1
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgTagsPerUser: {
+        $avg: "$numOfTags"
+      }
+    }
+  }
+  {
+    $group: {
+      _id: "$eyeColor",
+      uniqueEyeColor: {
+        $sum: 1
+      }
+    }
+  }
+  {
+    $group: {
+      _id: "$company.location.country",
+      userCount: {
+        $sum: 1
+      }
+    }
+  }
+  {
+    $sort: {
+      userCount: -1
+    }
+  }
+  {
+    $limit: 1
+  }
+  {
+    $group: {
+      _id: "$gender",
+      genderCount: {
+        $sum: 1
+      }
+    }
+  }
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      countFavFruit: {
+        $count: {}
+      }
+    }
+  }
+  {
+    $sort: {
+      countFavFruit: -1
+    }
+  }
+  {
+    $group: {
+      _id: "$age",
+      totalCount: {
+        $count: {}
+      }
+    }
+  }
+  {
+    $sort: {
+      _id: 1
+    }
+  }
+  {
+    $count: "TotalAgeType"
+  }
+  {
+    $group: {
+      _id: null,
+      avgAge: {
+        $avg: "$age"
+      }
+    }
+  }
+  {
+    $group: {
+      _id: "$gender",
+      UserCount: {
+        $count: {}
+      },
+      AgeSum: {
+        $sum: "$age"
+      },
+      AvgAge: {
+        $avg: "$age"
+      }
+    }
+  }
+  {
+    $match: {
+      isActive: true
+    }
+  }
+  {
+    $count: "Active Users"
+  }
+]
